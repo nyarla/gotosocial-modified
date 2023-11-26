@@ -26,6 +26,7 @@ import (
 
 	"github.com/superseriousbusiness/activity/streams/vocab"
 	"github.com/superseriousbusiness/gotosocial/internal/ap"
+	"github.com/superseriousbusiness/gotosocial/internal/config"
 	"github.com/superseriousbusiness/gotosocial/internal/gtserror"
 	"github.com/superseriousbusiness/gotosocial/internal/gtsmodel"
 	"github.com/superseriousbusiness/gotosocial/internal/log"
@@ -59,6 +60,10 @@ func (p *Processor) StatusGet(ctx context.Context, requestedUser string, statusI
 	visible, err := p.filter.StatusVisible(ctx, requester, status)
 	if err != nil {
 		return nil, gtserror.NewErrorInternalError(err)
+	}
+
+	if config.GetKalaclistaAllowedUnauthorizedGet() {
+		visible = status.Visibility == gtsmodel.VisibilityPublic
 	}
 
 	if !visible {
