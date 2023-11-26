@@ -183,7 +183,9 @@ type Configuration struct {
 
 	RequestIDHeader string `name:"request-id-header" usage:"Header to extract the Request ID from. Eg.,'X-Request-Id'."`
 
-	KalaclistaKeepEmojisForever bool `name:"kalaclista-keep-emojis-forever" usage:"Keep emojis forever"`
+	// kalaclista mods
+	KalaclistaAllowedUnauthorizedGet bool `name:"kalaclista-allowed-unauthorized-get" usage:"unlock AUTHOZIED_FETCH (aka Secure mode in Mastodon) mode."`
+	KalaclistaKeepEmojisForever      bool `name:"kalaclista-keep-emojis-forever" usage:"Keep emojis forever"`
 }
 
 type HTTPClientConfiguration struct {

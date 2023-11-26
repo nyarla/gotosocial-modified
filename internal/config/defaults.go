@@ -210,5 +210,6 @@ var Defaults = Configuration{
 
 	LogClientIP: true,
 
-	KalaclistaKeepEmojisForever: false,
+	KalaclistaAllowedUnauthorizedGet: false,
+	KalaclistaKeepEmojisForever:      false,
 }
