@@ -184,6 +184,7 @@ type Configuration struct {
 
 	// kalaclista mods
 	KalaclistaAllowedUnauthorizedGet bool `name:"kalaclista-allowed-unauthorized-get" usage:"unlock AUTHOZIED_FETCH (aka Secure mode in Mastodon) mode."`
+	KalaclistaKeepEmojisForever      bool `name:"kalaclista-keep-emojis-forever" usage:"Keep emojis forever"`
 }
 
 type HTTPClientConfiguration struct {
