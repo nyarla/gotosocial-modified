@@ -22,6 +22,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/superseriousbusiness/gotosocial/internal/config"
 	"github.com/superseriousbusiness/gotosocial/internal/db"
 	"github.com/superseriousbusiness/gotosocial/internal/gtscontext"
 	"github.com/superseriousbusiness/gotosocial/internal/gtserror"
@@ -282,6 +283,10 @@ func (e *Emoji) FixCacheStates(ctx context.Context) (int, error) {
 }
 
 func (e *Emoji) pruneUnused(ctx context.Context, emoji *gtsmodel.Emoji) (bool, error) {
+	if config.GetKalaclistaKeepEmojisForever() {
+		return false, nil
+	}
+
 	// Start a log entry for emoji.
 	l := log.WithContext(ctx).
 		WithField("emoji", emoji.ID)
@@ -352,6 +357,10 @@ func (e *Emoji) fixCacheState(ctx context.Context, emoji *gtsmodel.Emoji) (bool,
 func (e *Emoji) uncacheRemote(ctx context.Context, after time.Time, emoji *gtsmodel.Emoji) (bool, error) {
 	if !*emoji.Cached {
 		// Already uncached.
+		return false, nil
+	}
+
+	if config.GetKalaclistaKeepEmojisForever() {
 		return false, nil
 	}
 
