@@ -285,10 +285,6 @@ func (e *Emoji) FixCacheStates(ctx context.Context) (int, error) {
 }
 
 func (e *Emoji) pruneUnused(ctx context.Context, emoji *gtsmodel.Emoji) (bool, error) {
-	if config.GetKalaclistaKeepEmojisForever() {
-		return false, nil
-	}
-
 	// Start a log entry for emoji.
 	l := log.WithContext(ctx).
 		WithField("emoji", emoji.ID)
@@ -359,10 +355,6 @@ func (e *Emoji) fixCacheState(ctx context.Context, emoji *gtsmodel.Emoji) (bool,
 func (e *Emoji) uncacheRemote(ctx context.Context, after time.Time, emoji *gtsmodel.Emoji) (bool, error) {
 	if !*emoji.Cached {
 		// Already uncached.
-		return false, nil
-	}
-
-	if config.GetKalaclistaKeepEmojisForever() {
 		return false, nil
 	}
 
@@ -474,6 +466,10 @@ func (e *Emoji) uncache(ctx context.Context, emoji *gtsmodel.Emoji) error {
 		return nil
 	}
 
+	if config.GetKalaclistaKeepEmojisForever() {
+		return nil
+	}
+
 	// Remove emoji and static.
 	_, err := e.removeFiles(ctx,
 		emoji.ImagePath,
@@ -496,6 +492,10 @@ func (e *Emoji) uncache(ctx context.Context, emoji *gtsmodel.Emoji) error {
 func (e *Emoji) delete(ctx context.Context, emoji *gtsmodel.Emoji) error {
 	if gtscontext.DryRun(ctx) {
 		// Dry run, do nothing.
+		return nil
+	}
+
+	if config.GetKalaclistaKeepEmojisForever() {
 		return nil
 	}
 
