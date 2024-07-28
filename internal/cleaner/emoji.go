@@ -89,6 +89,13 @@ func (e *Emoji) LogFixCacheStates(ctx context.Context) {
 // UncacheRemote will uncache all remote emoji older than given input time. Context
 // will be checked for `gtscontext.DryRun()` in order to actually perform the action.
 func (e *Emoji) UncacheRemote(ctx context.Context, olderThan time.Time) (int, error) {
+	// kalaclista modded feature
+	// if `kalaclista-keep-emojis-forever` is true,
+	// UncacheRemote is nothing do it.
+	if config.GetKalaclistaKeepEmojisForever() {
+		return 0, nil
+	}
+
 	var total int
 
 	// Drop time by a minute to improve search,
@@ -474,10 +481,6 @@ func (e *Emoji) uncache(ctx context.Context, emoji *gtsmodel.Emoji) error {
 		return nil
 	}
 
-	if config.GetKalaclistaKeepEmojisForever() {
-		return nil
-	}
-
 	// Remove emoji and static.
 	_, err := e.removeFiles(ctx,
 		emoji.ImagePath,
@@ -500,10 +503,6 @@ func (e *Emoji) uncache(ctx context.Context, emoji *gtsmodel.Emoji) error {
 func (e *Emoji) delete(ctx context.Context, emoji *gtsmodel.Emoji) error {
 	if gtscontext.DryRun(ctx) {
 		// Dry run, do nothing.
-		return nil
-	}
-
-	if config.GetKalaclistaKeepEmojisForever() {
 		return nil
 	}
 
