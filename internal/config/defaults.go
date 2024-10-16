@@ -230,4 +230,6 @@ var Defaults = Configuration{
 	RequestIDHeader: "X-Request-Id",
 
 	LogClientIP: true,
+
+	KalaclistaAllowedUnauthorizedGet: false,
 }
